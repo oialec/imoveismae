@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { Imovel } from "@/lib/types";
 import { formatPrice, formatPriceAluguel, getWhatsAppLink, getSupabaseImageUrl, tipoLabel } from "@/lib/utils";
 import FotoGaleria from "@/components/imoveis/FotoGaleria";
+import MapaBairro from "@/components/imoveis/MapaBairro";
 
 const NOME = process.env.NEXT_PUBLIC_NOME_CORRETORA || "Selma Villar";
 
@@ -117,19 +118,18 @@ export default async function ImovelPage({ params }: { params: { slug: string } 
                 <p className="text-cinza-medio text-sm mb-3">
                   Localizado no bairro {imovel.bairro}, {imovel.cidade}.
                 </p>
-                <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-                  <iframe
-                    src={`https://maps.google.com/maps?q=${encodeURIComponent(`${imovel.bairro}, ${imovel.cidade}, SP, Brasil`)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={`Mapa do bairro ${imovel.bairro} em ${imovel.cidade}`}
-                  />
+                <MapaBairro bairro={imovel.bairro} cidade={imovel.cidade} />
+                <div className="flex items-center justify-between mt-2">
+                  <p className="text-xs text-cinza-medio">O mapa mostra a região do bairro. O endereço exato é informado após o contato.</p>
+                  <a
+                    href={`https://www.google.com/maps/search/${encodeURIComponent(`${imovel.bairro}, ${imovel.cidade}, SP, Brasil`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-laranja hover:underline shrink-0 ml-3"
+                  >
+                    Ver no Google Maps →
+                  </a>
                 </div>
-                <p className="text-xs text-cinza-medio mt-2">O mapa mostra a região do bairro. O endereço exato é informado após o contato.</p>
               </div>
             )}
           </div>
